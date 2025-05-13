@@ -16,22 +16,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::prefix('v1')->group(function () {
+    Route::get('test',function (){
+        $now = microtime(true); // Always returns float, no need for named argument
+        $boot_time = round(($now - LARAVEL_START) * 1000, 2);
+        return response()->json([
+            'status' => true,
+            'data' => $boot_time,
+            'message' => 'bootstrap time'
+        ], 200);
+    });
 
-
-    // Public routes
-    Route::get('auth/test',function (Request $request){
-        return  new \Illuminate\Http\JsonResponse("success");
-    }
-
-    );
-    Route::get('auth/testdb',function(){
+    Route::get('testdb',function(){
         $data = ApiUser::all();
         return response()->json([
             'status' => true,
             'data' => $data,
             'message' => 'Data fetched successfully'
         ], 200);
-    })->name('auth.testdb');
-
-
+    });
 });

@@ -4,7 +4,7 @@ FROM php:8.2-fpm
 # Install system dependencies and PHP extensions
 RUN apt-get update && apt-get install -y \
     nginx supervisor curl git unzip zip libzip-dev libpng-dev libonig-dev libxml2-dev \
-    && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd zip
+    && docker-php-ext-install pdo pdo_mysql mbstring exif pcntl bcmath gd zip opcache
 
 # Install Composer globally from Composer image
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
@@ -15,6 +15,8 @@ WORKDIR /var/www
 # Copy Laravel files
 COPY . /var/www
 COPY .env .env
+
+COPY docker/opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
 # Install PHP dependencies (production optimized)
 RUN composer install --no-dev --optimize-autoloader

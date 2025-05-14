@@ -34,4 +34,8 @@ Route::prefix('v1')->group(function () {
             'message' => 'Data fetched successfully'
         ], 200);
     });
+
+    Route::get('/opstatus', function() {
+        return response()->json(opcache_get_status());
+    });
 });
